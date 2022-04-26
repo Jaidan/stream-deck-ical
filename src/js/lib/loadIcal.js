@@ -4,7 +4,7 @@
  * @license MIT
  */
 /* global fetch */
-import ICAL from 'ical.js'
+import ICAL from './ical.js'
 import { isValidURL, sleep } from './utils.js'
 import { deepEqual } from 'fast-equals'
 
@@ -66,7 +66,7 @@ function filterEvents (events, ...args) {
           selectedEvents.push({
             uid: event.uid,
             summary: event.summary,
-            url: event.url
+            url: event.url,
             start: eventStart,
             end: eventEnd
           })
@@ -78,7 +78,7 @@ function filterEvents (events, ...args) {
       selectedEvents.push({
         uid: event.uid,
         summary: event.summary,
-        url: event.url
+        url: event.url,
         start: eventStart,
         end: eventEnd
       })

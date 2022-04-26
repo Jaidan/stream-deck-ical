@@ -152,7 +152,7 @@ export default class StreamDeck {
   openUrl(url) {
     if (this._websocket) {
       const json = {
-        event: 'openUrl",
+        event: "openUrl",
         payload: {
           url: url
         }
