@@ -18,6 +18,7 @@ export default class TimeLeft extends Action {
     this.stopTimeAt = -300
     this.activeMeetings = 0
     this.currentMeeting = 0
+    this.keyPressStart = null
     this.interval = null
     this._cacheVersion = 0
 
@@ -47,9 +48,7 @@ export default class TimeLeft extends Action {
     this.interval = null
   }
 
-  onKeyUp (context, settings, coordinates, desiredState, state) {
-    if (settings === undefined) settings = this._settings
-
+  onShortPress(context, settings) {
     if (this.activeMeetings > 1) this.setTitle(context, 'Loading\nNext\nMeeting')
 
     if (this.interval) {
@@ -69,6 +68,27 @@ export default class TimeLeft extends Action {
     }
 
     executeIfCacheAvailable(this, context, () => { this.startTimer(context) })
+  }
+
+  onLongPress(context, settings) {
+    this.streamDeck.openUrl(this.currentEvent.url)
+  }
+
+
+  onKeyDown(context, settings, coordinates, desiredState, state) {
+    this.keyPressStart = Date.now()
+  }
+
+  onKeyUp (context, settings, coordinates, desiredState, state) {
+    if (settings === undefined) settings = this._settings
+    pressDuration = Date.now() - this.keyPressStart
+    if (pressDuration > 3000) {
+      onLongPress(context, settings)
+    } else {
+      onShortPress(context, settings)
+    }
+    this.keyPressStart = null
+
   }
 
   startTimer (context) {
