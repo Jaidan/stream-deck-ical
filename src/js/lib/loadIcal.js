@@ -66,6 +66,7 @@ function filterEvents (events, ...args) {
           selectedEvents.push({
             uid: event.uid,
             summary: event.summary,
+            url: event.url
             start: eventStart,
             end: eventEnd
           })
@@ -77,6 +78,7 @@ function filterEvents (events, ...args) {
       selectedEvents.push({
         uid: event.uid,
         summary: event.summary,
+        url: event.url
         start: eventStart,
         end: eventEnd
       })

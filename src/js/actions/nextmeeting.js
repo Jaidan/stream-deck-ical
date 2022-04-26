@@ -19,6 +19,7 @@ export default class NextMeeting extends Action {
     this.interval = null
     this._cacheVersion = 0
     this.currentEvent = {}
+    this.keyPressStart = null
     this.marquee = {
       active: false,
       interval: null
@@ -53,8 +54,10 @@ export default class NextMeeting extends Action {
     this.interval = null
   }
 
-  onKeyUp (context, settings, coordinates, desiredState, state) {
-    if (settings === undefined) settings = this._settings
+  onKeyDown(context, settings, coordinates, desiredState, state) {
+    this.keyPressStart = Date.now()
+  }
+  onShortPress(context, settings) {
 
     if (this.marquee.active) {
       clearInterval(this.marquee.interval)
@@ -78,6 +81,21 @@ export default class NextMeeting extends Action {
 
       executeIfCacheAvailable(this, context, () => { this.startTimer(context) })
     })
+  }
+  
+  onLongPress(context, settings) {
+    this.streamDeck.openUrl(this.currentEvent.url)
+  }
+
+  onKeyUp (context, settings, coordinates, desiredState, state) {
+    if (settings === undefined) settings = this._settings
+    pressDuration = Date.now() - this.keyPressStart
+    if (pressDuration > 3000) {
+      onLongPress(context, settings)
+    } else {
+      onShortPress(context, settings)
+    }
+    this.keyPressStart = null
   }
 
   startTimer (context) {

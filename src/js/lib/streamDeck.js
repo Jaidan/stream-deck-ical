@@ -70,6 +70,11 @@ export default class StreamDeck {
       if (context in this.activeActions) {
         this.activeActions[context].onKeyUp(context, payload.settings, payload.coordinates, payload.userDesiredState, payload.state)
       }
+      
+    } else if (event === 'keyDown') {
+      if (context in this.activeActions) {
+        this.activeActions[context].onKeyDown(context, payload.settings, payload.coordinates, payload.userDesiredState, payload.state)
+      }
     } else if (event === 'willAppear') {
       settings = payload.settings
 
@@ -140,6 +145,18 @@ export default class StreamDeck {
         uuid: this.uuid
       }
 
+      this._websocket.send(JSON.stringify(json))
+    }
+  }
+
+  openUrl(url) {
+    if (this._websocket) {
+      const json = {
+        event: 'openUrl",
+        payload: {
+          url: url
+        }
+      }
       this._websocket.send(JSON.stringify(json))
     }
   }
